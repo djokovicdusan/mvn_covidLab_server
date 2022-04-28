@@ -67,7 +67,9 @@ class SacuvajPacijentaTest {
 		pacijent.setPrezime("Colic");
 		pacijent.setDatumRodjenja(new Date(2000, 10, 10));
 		pacijent.setEmail("test");
-//		pacijent.setLaborant(new Laborant());
+		Laborant lale = new Laborant();
+		lale.setLaborantId((long)1);
+		pacijent.setLaborant(lale);
 		pacijent.setTelefon("123");
 
 		try {
@@ -78,8 +80,9 @@ class SacuvajPacijentaTest {
 			boolean condition = false;
 			for (OpstiDomenskiObjekat opstiDomenskiObjekat : laborantList) {
 				Pacijent labDummy = (Pacijent) opstiDomenskiObjekat;
-				if (labDummy.getIme().equals(pacijent.getIme())) {
-					assertNull(labDummy.getLaborant());
+				if (labDummy.getIme().equals(pacijent.getIme()) && labDummy.getLaborant().getLaborantId() ==
+						pacijent.getLaborant().getLaborantId()) {
+					assertNotNull(labDummy.getLaborant());
 					condition = true;
 				}
 
