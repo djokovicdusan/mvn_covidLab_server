@@ -17,14 +17,14 @@ public class SacuvajPacijentaSO extends OpstaSistemskaOperacija{
     private Long id;
     
      @Override
-    protected void validate(Object entity) throws Exception {
+    public void validate(Object entity) throws Exception {
         if (!(entity instanceof Pacijent)) {
             throw new Exception("Invalid entity parameter!");
         }
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         Pacijent pacijent=(Pacijent)entity;
         id = databaseBroker.sacuvaj(pacijent);
     }

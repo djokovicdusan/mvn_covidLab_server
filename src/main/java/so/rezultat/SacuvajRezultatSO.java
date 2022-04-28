@@ -16,7 +16,7 @@ import so.OpstaSistemskaOperacija;
 public class SacuvajRezultatSO extends OpstaSistemskaOperacija{
     
      @Override
-    protected void validate(Object entity) throws Exception {
+     public void validate(Object entity) throws Exception {
         List<Rezultat> list = (List<Rezultat>) entity;
         for(Rezultat r: list){
         if (!(r instanceof Rezultat)) {
@@ -26,7 +26,7 @@ public class SacuvajRezultatSO extends OpstaSistemskaOperacija{
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         List<Rezultat> list = (List<Rezultat>) entity;
         for(Rezultat rezultat: list){
         databaseBroker.sacuvajVoid(rezultat);

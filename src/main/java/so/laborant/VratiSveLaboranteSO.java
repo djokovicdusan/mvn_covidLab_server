@@ -26,7 +26,7 @@ public class VratiSveLaboranteSO extends OpstaSistemskaOperacija{
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         list = databaseBroker.dajSve((Laborant) entity);
     }
     

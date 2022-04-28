@@ -18,14 +18,14 @@ public class VratiSveTermineTestiranjaSO extends OpstaSistemskaOperacija{
     private List<OpstiDomenskiObjekat> list;
     
     @Override
-    protected void validate(Object entity) throws Exception {
+    public void validate(Object entity) throws Exception {
         if (!(entity instanceof TerminTestiranja)) {
             throw new Exception("Invalid entity parameter!");
         }
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         list = databaseBroker.dajSve((TerminTestiranja) entity);
         
     }

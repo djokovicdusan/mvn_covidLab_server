@@ -24,7 +24,7 @@ public class UcitajLaborantaSO extends OpstaSistemskaOperacija{
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         Laborant laborant =(Laborant)entity;
         generalEntity = databaseBroker.nadji(laborant,laborant.getLaborantId());
     }
