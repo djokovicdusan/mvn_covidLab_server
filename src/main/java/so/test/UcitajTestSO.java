@@ -17,14 +17,14 @@ public class UcitajTestSO extends OpstaSistemskaOperacija{
     private OpstiDomenskiObjekat generalEntity;
     
      @Override
-    protected void validate(Object entity) throws Exception {
+     public void validate(Object entity) throws Exception {
         if (!(entity instanceof Test)) {
             throw new Exception("Invalid entity parameter!");
         }
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         Test test =(Test)entity;
         generalEntity = databaseBroker.nadji(test,test.getTestId());
     }

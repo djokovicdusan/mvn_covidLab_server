@@ -17,7 +17,7 @@ public class UcitajLaborantaSO extends OpstaSistemskaOperacija{
     private OpstiDomenskiObjekat generalEntity;
     
      @Override
-    protected void validate(Object entity) throws Exception {
+     public void validate(Object entity) throws Exception {
         if (!(entity instanceof Laborant)) {
             throw new Exception("Invalid entity parameter!");
         }
