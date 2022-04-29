@@ -14,14 +14,14 @@ import so.OpstaSistemskaOperacija;
  */
 public class ObrisiPacijentaSO extends OpstaSistemskaOperacija{
      @Override
-    protected void validate(Object entity) throws Exception {
+     public void validate(Object entity) throws Exception {
         if (!(entity instanceof Pacijent)) {
             throw new Exception("Invalid entity parameter!");
         }
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
         Pacijent pacijent=(Pacijent)entity;
         databaseBroker.obrisi(pacijent);
     }

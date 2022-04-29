@@ -15,14 +15,14 @@ import so.OpstaSistemskaOperacija;
 public class ObrisiLaborantaSO extends OpstaSistemskaOperacija{
 
     @Override
-    protected void validate(Object entity) throws Exception {
+    public void validate(Object entity) throws Exception {
         if (!(entity instanceof Laborant)) {
             throw new Exception("Invalid entity parameter!");
         }
     }
 
     @Override
-    protected void execute(Object entity) throws Exception {
+    public void execute(Object entity) throws Exception {
          Laborant laborant =(Laborant)entity;
         databaseBroker.obrisi(laborant);
     }
