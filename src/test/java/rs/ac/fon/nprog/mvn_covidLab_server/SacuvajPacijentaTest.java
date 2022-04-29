@@ -66,7 +66,7 @@ class SacuvajPacijentaTest {
 		pacijent.setIme("Zdravko");
 		pacijent.setPrezime("Colic");
 		pacijent.setDatumRodjenja(new Date(2000, 10, 10));
-		pacijent.setEmail("test");
+//		pacijent.setEmail("test");
 		Laborant lale = new Laborant();
 		lale.setLaborantId((long)1);
 		pacijent.setLaborant(lale);

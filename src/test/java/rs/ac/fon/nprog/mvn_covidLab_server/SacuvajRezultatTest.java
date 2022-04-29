@@ -65,13 +65,27 @@ class SacuvajRezultatTest {
 		rezultat.setVrednost(false);
 		domen.Test fakeTest = new domen.Test();
 		fakeTest.setTestId((long)1);
-		TerminTestiranja fakeTerminTestiranja = new TerminTestiranja();
-		fakeTerminTestiranja.setTerminTestiranjaId((long)1);
+//		TerminTestiranja fakeTerminTestiranja = new TerminTestiranja();
+//		fakeTerminTestiranja.setTerminTestiranjaId((long)1);
+		SacuvajTerminTestiranjaSO sacuvajTerminTestiranjaSO = new SacuvajTerminTestiranjaSO();
+		TerminTestiranja terminTestiranja = new TerminTestiranja();
+		TerminTestiranja terminTestiranjaFromDatabase = new TerminTestiranja();
+		terminTestiranja.setDatum(new Date(1999, 11, 1));
+		terminTestiranja.setNapomena("test");
+		Pacijent p = new Pacijent();
+		p.setPacijentId((long)1);
+		Laborant l = new Laborant();
+		l.setLaborantId((long)1);
+		terminTestiranja.setPacijent(p);
+		terminTestiranja.setLaborant(l);
 		rezultat.setTest(fakeTest);
-		rezultat.setTerminTestiranja(fakeTerminTestiranja);
+//		rezultat.setTerminTestiranja();
 
 
 		try {
+			sacuvajTerminTestiranjaSO.execute(terminTestiranja);
+			terminTestiranjaFromDatabase.setTerminTestiranjaId(sacuvajTerminTestiranjaSO.getId());
+			rezultat.setTerminTestiranja(terminTestiranjaFromDatabase);
 			List<Rezultat> fakeListWithOneElement = new ArrayList<>();
 			fakeListWithOneElement.add(rezultat);
 			sacuvajRezultatSO.execute(fakeListWithOneElement);

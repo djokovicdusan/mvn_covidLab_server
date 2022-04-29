@@ -62,8 +62,12 @@ class SacuvajTerminTest {
 	void testExecute() {
 		terminTestiranja.setDatum(new Date(1999, 11, 1));
 		terminTestiranja.setNapomena("test");
-		terminTestiranja.setPacijent(new Pacijent());
-		terminTestiranja.setLaborant(new Laborant());
+		Pacijent p = new Pacijent();
+		p.setPacijentId((long)1);
+		Laborant l = new Laborant();
+		l.setLaborantId((long)1);
+		terminTestiranja.setPacijent(p);
+		terminTestiranja.setLaborant(l);
 
 		try {
 			sacuvajTerminTestiranja.execute(terminTestiranja);
@@ -74,8 +78,8 @@ class SacuvajTerminTest {
 			for (OpstiDomenskiObjekat opstiDomenskiObjekat : laborantList) {
 				TerminTestiranja labDummy = (TerminTestiranja) opstiDomenskiObjekat;
 				if (labDummy.getNapomena().equals(terminTestiranja.getNapomena())) {
-					assertNull(labDummy.getLaborant());
-					assertNull(labDummy.getPacijent());
+					assertNotNull(labDummy.getLaborant());
+					assertNotNull(labDummy.getPacijent());
 					condition = true;
 				}
 
