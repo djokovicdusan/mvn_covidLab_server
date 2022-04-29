@@ -3,9 +3,6 @@ package rs.ac.fon.nprog.mvn_covidLab_server;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.List;
-import java.util.Properties;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -13,18 +10,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domen.Administrator;
 import domen.Laborant;
-import domen.OpstiDomenskiObjekat;
-import kontroler.Kontroler;
-import so.OpstaSistemskaOperacija;
-import so.laborant.SacuvajLaborantaSO;
+import so.laborant.IzmeniLaborantaSO;
 import so.laborant.UcitajLaborantaSO;
-import so.laborant.VratiSveLaboranteSO;
 import util.SettingsLoader;
 
-class SacuvajLaborantaTest {
-	private SacuvajLaborantaSO sacuvajLaborantaSO;
+class IzmeniLaborantaTest {
+
+	private  static IzmeniLaborantaSO izmeniLaborantaSO;
 	private static Laborant laborant;
 
 	@BeforeAll
@@ -39,44 +32,60 @@ class SacuvajLaborantaTest {
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		izmeniLaborantaSO = new IzmeniLaborantaSO();
+		laborant.setBrojOrdinacije(1);
+		laborant.setIme("Micko");
+		laborant.setPrezime("Ljubicic");
+		laborant.setLaborantId((long) 1);
+		try {
+			izmeniLaborantaSO.execute(laborant);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		izmeniLaborantaSO = null;
 		File propertyGetter = new File("settings.properties");
 		SettingsLoader.getInstance().setProperty("url", "jdbc:mysql://localhost:3306/lab");
-//		properties.setProperty("url", "jdbc:mysql://localhost:3306/lab");
-//		properties.setProperty("username", "root");
-//		properties.setProperty("password", "root");
-//		properties.store(out, null);
-//		out.close();
+
 	}
 
 	@BeforeEach
 	void setUp() throws Exception {
-		sacuvajLaborantaSO = new SacuvajLaborantaSO();
+		izmeniLaborantaSO = new IzmeniLaborantaSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		sacuvajLaborantaSO = null;
+		izmeniLaborantaSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> sacuvajLaborantaSO.validate(new domen.Pacijent()));
+		assertThrows(java.lang.Exception.class, () -> izmeniLaborantaSO.validate(new domen.Pacijent()));
 	}
 
 	@Test
 	void testExecute() {
-		laborant.setIme("Zdravko");
-		laborant.setPrezime("Colic");
-		laborant.setBrojOrdinacije(13);
+//		laborant.setIme("Zdravko");
+//		laborant.setPrezime("Colic");
+		laborant.setBrojOrdinacije(15);
+		laborant.setLaborantId((long) 1);
 
 		try {
-			sacuvajLaborantaSO.execute(laborant);
-			laborant.setLaborantId(sacuvajLaborantaSO.getId());
-
+			izmeniLaborantaSO.execute(laborant);
 			UcitajLaborantaSO ucitajLaborantaSO = new UcitajLaborantaSO();
 			ucitajLaborantaSO.execute(laborant);
-			assertEquals(laborant, ucitajLaborantaSO.getResult());
 
+			boolean condition = false;
+
+			Laborant labDummy = (Laborant) ucitajLaborantaSO.getResult();
+			if (labDummy.getBrojOrdinacije() == (laborant.getBrojOrdinacije())) {
+				System.out.println(labDummy);
+				condition = true;
+
+			}
+			assertTrue(condition);
+//			assertEquals(laborant.getIme(),((Laborant)ucitajLaborantaSO.getResult()).getIme());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
