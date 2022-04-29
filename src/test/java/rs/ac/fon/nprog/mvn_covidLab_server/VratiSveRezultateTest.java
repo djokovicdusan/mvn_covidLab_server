@@ -3,6 +3,7 @@ package rs.ac.fon.nprog.mvn_covidLab_server;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -10,14 +11,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domen.Pacijent;
-import so.pacijent.UcitajPacijentaSO;
-import so.test.UcitajTestSO;
+import domen.OpstiDomenskiObjekat;
+import domen.Rezultat;
+import so.rezultat.SacuvajRezultatSO;
+import so.rezultat.VratiSveRezultateSO;
 import util.SettingsLoader;
 
-class UcitajTestTest {
-	private UcitajTestSO ucitajTestSO;
-	private static domen.Test test;
+class VratiSveRezultateTest {
+
+	private VratiSveRezultateSO vratiSveRezultateSO;
+	private static Rezultat rezultat;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -26,7 +29,7 @@ class UcitajTestTest {
 		SettingsLoader.getInstance().setProperty("username", "root");
 		SettingsLoader.getInstance().setProperty("password", "root");
 
-		test = new domen.Test();
+		rezultat = new Rezultat();
 	}
 
 	@AfterAll
@@ -38,42 +41,31 @@ class UcitajTestTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		ucitajTestSO = new UcitajTestSO();
+		vratiSveRezultateSO = new VratiSveRezultateSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		ucitajTestSO = null;
+		vratiSveRezultateSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> ucitajTestSO.validate(new domen.TerminTestiranja()));
+		assertThrows(java.lang.Exception.class, () -> vratiSveRezultateSO.validate(new domen.Test()));
 	}
 
 	@Test
 	void testExecute() {
-		test.setTestId((long) 1);
-
 		try {
-//			SacuvajPacijentaSO sacuvajPacijentaSO = new SacuvajPacijentaSO();
-//			sacuvajPacijentaSO.execute(pacijent);
-			ucitajTestSO.execute(test);
-
-			boolean condition = false;
-
-			domen.Test labDummy = (domen.Test) ucitajTestSO.getResult();
-			if (labDummy.getTestId().equals(test.getTestId())) {
-				System.out.println(labDummy);
-				condition = true;
-
-			}
-			assertTrue(condition);
-//			assertEquals(laborant.getIme(),((Laborant)ucitajLaborantaSO.getResult()).getIme());
+			vratiSveRezultateSO.execute(rezultat);
+			List<OpstiDomenskiObjekat> filterResult = vratiSveRezultateSO.getList();
+			assertNotNull(filterResult);
+			assertTrue(filterResult.size() >= 1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
+
 }

@@ -3,6 +3,7 @@ package rs.ac.fon.nprog.mvn_covidLab_server;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -10,13 +11,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domen.Pacijent;
-import so.pacijent.UcitajPacijentaSO;
+import domen.OpstiDomenskiObjekat;
 import so.test.UcitajTestSO;
+import so.test.VratiSveTestoveSO;
 import util.SettingsLoader;
 
-class UcitajTestTest {
-	private UcitajTestSO ucitajTestSO;
+class VratiSveTestoveTest {
+
+	private VratiSveTestoveSO vratiSveTestoveSO;
 	private static domen.Test test;
 
 	@BeforeAll
@@ -38,42 +40,31 @@ class UcitajTestTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		ucitajTestSO = new UcitajTestSO();
+		vratiSveTestoveSO = new VratiSveTestoveSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		ucitajTestSO = null;
+		vratiSveTestoveSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> ucitajTestSO.validate(new domen.TerminTestiranja()));
+		assertThrows(java.lang.Exception.class, () -> vratiSveTestoveSO.validate(new domen.TerminTestiranja()));
 	}
 
 	@Test
 	void testExecute() {
-		test.setTestId((long) 1);
-
 		try {
-//			SacuvajPacijentaSO sacuvajPacijentaSO = new SacuvajPacijentaSO();
-//			sacuvajPacijentaSO.execute(pacijent);
-			ucitajTestSO.execute(test);
-
-			boolean condition = false;
-
-			domen.Test labDummy = (domen.Test) ucitajTestSO.getResult();
-			if (labDummy.getTestId().equals(test.getTestId())) {
-				System.out.println(labDummy);
-				condition = true;
-
-			}
-			assertTrue(condition);
-//			assertEquals(laborant.getIme(),((Laborant)ucitajLaborantaSO.getResult()).getIme());
+			vratiSveTestoveSO.execute(test);
+			List<OpstiDomenskiObjekat> filterResult = vratiSveTestoveSO.getList();
+			assertNotNull(filterResult);
+			assertTrue(filterResult.size() >= 1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
+
 }

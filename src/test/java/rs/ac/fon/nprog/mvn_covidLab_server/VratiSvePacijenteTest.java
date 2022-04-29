@@ -3,6 +3,7 @@ package rs.ac.fon.nprog.mvn_covidLab_server;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -10,14 +11,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import domen.OpstiDomenskiObjekat;
 import domen.Pacijent;
-import so.pacijent.UcitajPacijentaSO;
-import so.test.UcitajTestSO;
+import so.pacijent.NadjiPacijenteSO;
+import so.pacijent.VratiSvePacijenteSO;
 import util.SettingsLoader;
 
-class UcitajTestTest {
-	private UcitajTestSO ucitajTestSO;
-	private static domen.Test test;
+class VratiSvePacijenteTest {
+
+	private VratiSvePacijenteSO vratiSvePacijenteSO;
+	private static Pacijent pacijent;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -26,54 +29,47 @@ class UcitajTestTest {
 		SettingsLoader.getInstance().setProperty("username", "root");
 		SettingsLoader.getInstance().setProperty("password", "root");
 
-		test = new domen.Test();
+		pacijent = new Pacijent();
 	}
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
 		File propertyGetter = new File("settings.properties");
 		SettingsLoader.getInstance().setProperty("url", "jdbc:mysql://localhost:3306/lab");
-
+//		properties.setProperty("url", "jdbc:mysql://localhost:3306/lab");
+//		properties.setProperty("username", "root");
+//		properties.setProperty("password", "root");
+//		properties.store(out, null);
+//		out.close();
 	}
 
 	@BeforeEach
 	void setUp() throws Exception {
-		ucitajTestSO = new UcitajTestSO();
+		vratiSvePacijenteSO = new VratiSvePacijenteSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		ucitajTestSO = null;
+		vratiSvePacijenteSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> ucitajTestSO.validate(new domen.TerminTestiranja()));
+		assertThrows(java.lang.Exception.class, () -> vratiSvePacijenteSO.validate(new domen.Test()));
 	}
 
 	@Test
 	void testExecute() {
-		test.setTestId((long) 1);
-
 		try {
-//			SacuvajPacijentaSO sacuvajPacijentaSO = new SacuvajPacijentaSO();
-//			sacuvajPacijentaSO.execute(pacijent);
-			ucitajTestSO.execute(test);
-
-			boolean condition = false;
-
-			domen.Test labDummy = (domen.Test) ucitajTestSO.getResult();
-			if (labDummy.getTestId().equals(test.getTestId())) {
-				System.out.println(labDummy);
-				condition = true;
-
-			}
-			assertTrue(condition);
-//			assertEquals(laborant.getIme(),((Laborant)ucitajLaborantaSO.getResult()).getIme());
+			vratiSvePacijenteSO.execute(pacijent);
+			List<OpstiDomenskiObjekat> filterResult = vratiSvePacijenteSO.getList();
+			assertNotNull(filterResult);
+			assertTrue(filterResult.size() >= 1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
+
 }
