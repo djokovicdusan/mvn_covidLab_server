@@ -9,20 +9,34 @@ import domen.Pacijent;
 import so.OpstaSistemskaOperacija;
 
 /**
- *
+ * System operation that deletes any Pacijent, given the key.
+ * 
  * @author Dule Djo
  */
-public class ObrisiPacijentaSO extends OpstaSistemskaOperacija{
-     @Override
-     public void validate(Object entity) throws Exception {
-        if (!(entity instanceof Pacijent)) {
-            throw new Exception("Invalid entity parameter!");
-        }
-    }
+public class ObrisiPacijentaSO extends OpstaSistemskaOperacija {
 
-    @Override
-    public void execute(Object entity) throws Exception {
-        Pacijent pacijent=(Pacijent)entity;
-        databaseBroker.obrisi(pacijent);
-    }
+	/**
+	 * Validates an object before the system operation is executed.
+	 * 
+	 * @param entity Object that is sent as request argument.
+	 * @throws Exception If there were any type errors.
+	 */
+	@Override
+	public void validate(Object entity) throws Exception {
+		if (!(entity instanceof Pacijent)) {
+			throw new Exception("Invalid entity parameter!");
+		}
+	}
+
+	/**
+	 * Executes the operation after the transaction has started.
+	 * 
+	 * @param entity Object that is sent as request argument.
+	 * @throws Exception If there were any type errors.
+	 */
+	@Override
+	public void execute(Object entity) throws Exception {
+		Pacijent pacijent = (Pacijent) entity;
+		databaseBroker.obrisi(pacijent);
+	}
 }
