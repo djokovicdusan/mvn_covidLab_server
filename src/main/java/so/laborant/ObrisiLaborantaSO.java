@@ -9,22 +9,35 @@ import domen.Laborant;
 import so.OpstaSistemskaOperacija;
 
 /**
- *
+ * System operation that deletes any Laborant, given the key.
+ * 
  * @author Dule Djo
  */
-public class ObrisiLaborantaSO extends OpstaSistemskaOperacija{
+public class ObrisiLaborantaSO extends OpstaSistemskaOperacija {
 
-    @Override
-    public void validate(Object entity) throws Exception {
-        if (!(entity instanceof Laborant)) {
-            throw new Exception("Invalid entity parameter!");
-        }
-    }
+	/**
+	 * Validates an object before the system operation is executed.
+	 * 
+	 * @param entity Object that is sent as request argument.
+	 * @throws Exception If there were any type errors.
+	 */
+	@Override
+	public void validate(Object entity) throws Exception {
+		if (!(entity instanceof Laborant)) {
+			throw new Exception("Invalid entity parameter!");
+		}
+	}
 
-    @Override
-    public void execute(Object entity) throws Exception {
-         Laborant laborant =(Laborant)entity;
-        databaseBroker.obrisi(laborant);
-    }
-    
+	/**
+	 * Executes the operation after the transaction has started.
+	 * 
+	 * @param entity Object that is sent as request argument.
+	 * @throws Exception If there were any type errors.
+	 */
+	@Override
+	public void execute(Object entity) throws Exception {
+		Laborant laborant = (Laborant) entity;
+		databaseBroker.obrisi(laborant);
+	}
+
 }

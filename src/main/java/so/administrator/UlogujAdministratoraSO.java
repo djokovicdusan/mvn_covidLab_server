@@ -24,7 +24,7 @@ public class UlogujAdministratoraSO extends OpstaSistemskaOperacija {
 	/**
 	 * Validates an object before the system operation is executed.
 	 * 
-	 * @param param Object that is sent as request argument.
+	 * @param entity Object that is sent as request argument.
 	 * @throws Exception If there were any type errors.
 	 */
 	@Override
@@ -37,7 +37,7 @@ public class UlogujAdministratoraSO extends OpstaSistemskaOperacija {
 	/**
 	 * Executes the operation after the transaction has started.
 	 * 
-	 * @param param Object that is sent as request argument.
+	 * @param entity Object that is sent as request argument.
 	 * @throws Exception If there were any type errors.
 	 */
 	@Override

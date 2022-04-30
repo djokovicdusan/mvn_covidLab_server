@@ -9,26 +9,46 @@ import domen.Laborant;
 import so.OpstaSistemskaOperacija;
 
 /**
- *
+ * System operation that saves a Laborant in database.
+ * 
  * @author Dule Djo
  */
-public class SacuvajLaborantaSO extends OpstaSistemskaOperacija{
-    private Long id;
-    
-     @Override
-    public void validate(Object entity) throws Exception {
-        if (!(entity instanceof Laborant)) {
-            throw new Exception("Invalid entity parameter!");
-        }
-    }
+public class SacuvajLaborantaSO extends OpstaSistemskaOperacija {
+	/**
+	 * ID of a saved Laborant
+	 */
+	private Long id;
 
-    @Override
-    public void execute(Object entity) throws Exception {
-        Laborant laborant =(Laborant)entity;
-        id = databaseBroker.sacuvaj(laborant);
-    }
-    
-    public Long getId() {
-        return id;
-    }
+	/**
+	 * Validates an object before the system operation is executed.
+	 * 
+	 * @param entity Object that is sent as request argument.
+	 * @throws Exception If there were any type errors.
+	 */
+	@Override
+	public void validate(Object entity) throws Exception {
+		if (!(entity instanceof Laborant)) {
+			throw new Exception("Invalid entity parameter!");
+		}
+	}
+
+	/**
+	 * Executes the operation after the transaction has started.
+	 * 
+	 * @param entity Object that is sent as request argument.
+	 * @throws Exception If there were any type errors.
+	 */
+	@Override
+	public void execute(Object entity) throws Exception {
+		Laborant laborant = (Laborant) entity;
+		id = databaseBroker.sacuvaj(laborant);
+	}
+	/**
+	 * Returns the operation result as a primary key.
+	 * 
+	 * @return id ID which represents the primary key of the saved Laborant.
+	 */
+	public Long getId() {
+		return id;
+	}
 }
