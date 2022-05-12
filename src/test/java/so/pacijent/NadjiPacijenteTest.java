@@ -1,9 +1,10 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.pacijent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,17 +13,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import domen.Laborant;
+import domen.OpstiDomenskiObjekat;
 import domen.Pacijent;
-import so.laborant.SacuvajLaborantaSO;
-import so.laborant.UcitajLaborantaSO;
-import so.pacijent.ObrisiPacijentaSO;
-import so.pacijent.SacuvajPacijentaSO;
+import kontroler.Kontroler;
+import so.pacijent.NadjiPacijenteSO;
 import so.pacijent.UcitajPacijentaSO;
 import util.SettingsLoader;
 
-class ObrisiPacijentaTest {
+class NadjiPacijenteTest {
 
-	private ObrisiPacijentaSO obrisiPacijentaSO;
+	private NadjiPacijenteSO nadjiPacijenteSO;
 	private static Pacijent pacijent;
 
 	@BeforeAll
@@ -48,41 +48,34 @@ class ObrisiPacijentaTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		obrisiPacijentaSO = new ObrisiPacijentaSO();
+		nadjiPacijenteSO = new NadjiPacijenteSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		obrisiPacijentaSO = null;
+		nadjiPacijenteSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> obrisiPacijentaSO.validate(new domen.Test()));
+		assertThrows(java.lang.Exception.class, () -> nadjiPacijenteSO.validate(new domen.Test()));
 	}
-
 	@Test
 	void testExecute() {
-		Laborant l = new Laborant();
-		l.setLaborantId((long) 1);
-		pacijent.setIme("Zdravko");
-		pacijent.setPrezime("Sotra");
-		pacijent.setDatumRodjenja(new Date(78, 10, 10));
-
-		pacijent.setLaborant(l);
 		try {
-			SacuvajPacijentaSO sacuvajPacijentaSO = new SacuvajPacijentaSO();
-			sacuvajPacijentaSO.execute(pacijent);
-			obrisiPacijentaSO.execute(pacijent);
-			UcitajPacijentaSO ucitajPacijentaSO = new UcitajPacijentaSO();
-			ucitajPacijentaSO.execute(pacijent);
-			assertNull(ucitajPacijentaSO.getResult());
-
+			List<OpstiDomenskiObjekat> filterResult = Kontroler.getInstance().filtrirajPacijente("Stevan","Markovic");
+			ArrayList<Pacijent> filterResultCasted = new ArrayList<>();
+			assertEquals(1,filterResult.size());
+			for (OpstiDomenskiObjekat opstiDomenskiObjekat : filterResult) {
+				Pacijent l = (Pacijent) opstiDomenskiObjekat;
+				filterResultCasted.add(l);
+			}
+			assertEquals("Markovic",filterResultCasted.get(0).getPrezime());
+			assertEquals("Stevan",filterResultCasted.get(0).getIme());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 }

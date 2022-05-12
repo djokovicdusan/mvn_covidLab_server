@@ -1,4 +1,4 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,16 +11,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domen.Laborant;
 import domen.OpstiDomenskiObjekat;
-import so.laborant.NadjiLaboranteSO;
-import so.laborant.VratiSveLaboranteSO;
+import so.test.UcitajTestSO;
+import so.test.VratiSveTestoveSO;
 import util.SettingsLoader;
 
-class VratiSveLaboranteTest {
+class VratiSveTestoveTest {
 
-	private VratiSveLaboranteSO vratiSveLaboranteSO;
-	private static Laborant laborant;
+	private VratiSveTestoveSO vratiSveTestoveSO;
+	private static domen.Test test;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -29,7 +28,7 @@ class VratiSveLaboranteTest {
 		SettingsLoader.getInstance().setProperty("username", "root");
 		SettingsLoader.getInstance().setProperty("password", "root");
 
-		laborant = new Laborant();
+		test = new domen.Test();
 	}
 
 	@AfterAll
@@ -41,24 +40,24 @@ class VratiSveLaboranteTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		vratiSveLaboranteSO = new VratiSveLaboranteSO();
+		vratiSveTestoveSO = new VratiSveTestoveSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		vratiSveLaboranteSO = null;
+		vratiSveTestoveSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> vratiSveLaboranteSO.validate(new domen.Pacijent()));
+		assertThrows(java.lang.Exception.class, () -> vratiSveTestoveSO.validate(new domen.TerminTestiranja()));
 	}
 
 	@Test
 	void testExecute() {
 		try {
-			vratiSveLaboranteSO.execute(laborant);
-			List<OpstiDomenskiObjekat> filterResult = vratiSveLaboranteSO.getList();
+			vratiSveTestoveSO.execute(test);
+			List<OpstiDomenskiObjekat> filterResult = vratiSveTestoveSO.getList();
 			assertNotNull(filterResult);
 			assertTrue(filterResult.size() >= 1);
 		} catch (Exception e) {

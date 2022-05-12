@@ -1,4 +1,4 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,15 +10,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domen.Laborant;
-import so.laborant.IzmeniLaborantaSO;
-import so.laborant.UcitajLaborantaSO;
+import domen.Pacijent;
+import so.pacijent.UcitajPacijentaSO;
+import so.test.UcitajTestSO;
 import util.SettingsLoader;
 
-class IzmeniLaborantaTest {
-
-	private  static IzmeniLaborantaSO izmeniLaborantaSO;
-	private static Laborant laborant;
+class UcitajTestTest {
+	private UcitajTestSO ucitajTestSO;
+	private static domen.Test test;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -27,23 +26,11 @@ class IzmeniLaborantaTest {
 		SettingsLoader.getInstance().setProperty("username", "root");
 		SettingsLoader.getInstance().setProperty("password", "root");
 
-		laborant = new Laborant();
+		test = new domen.Test();
 	}
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
-		izmeniLaborantaSO = new IzmeniLaborantaSO();
-		laborant.setBrojOrdinacije(1);
-		laborant.setIme("Micko");
-		laborant.setPrezime("Ljubicic");
-		laborant.setLaborantId((long) 1);
-		try {
-			izmeniLaborantaSO.execute(laborant);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		izmeniLaborantaSO = null;
 		File propertyGetter = new File("settings.properties");
 		SettingsLoader.getInstance().setProperty("url", "jdbc:mysql://localhost:3306/lab");
 
@@ -51,35 +38,32 @@ class IzmeniLaborantaTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		izmeniLaborantaSO = new IzmeniLaborantaSO();
+		ucitajTestSO = new UcitajTestSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		izmeniLaborantaSO = null;
+		ucitajTestSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> izmeniLaborantaSO.validate(new domen.Pacijent()));
+		assertThrows(java.lang.Exception.class, () -> ucitajTestSO.validate(new domen.TerminTestiranja()));
 	}
 
 	@Test
 	void testExecute() {
-//		laborant.setIme("Zdravko");
-//		laborant.setPrezime("Colic");
-		laborant.setBrojOrdinacije(15);
-		laborant.setLaborantId((long) 1);
+		test.setTestId((long) 1);
 
 		try {
-			izmeniLaborantaSO.execute(laborant);
-			UcitajLaborantaSO ucitajLaborantaSO = new UcitajLaborantaSO();
-			ucitajLaborantaSO.execute(laborant);
+//			SacuvajPacijentaSO sacuvajPacijentaSO = new SacuvajPacijentaSO();
+//			sacuvajPacijentaSO.execute(pacijent);
+			ucitajTestSO.execute(test);
 
 			boolean condition = false;
 
-			Laborant labDummy = (Laborant) ucitajLaborantaSO.getResult();
-			if (labDummy.getBrojOrdinacije() == (laborant.getBrojOrdinacije())) {
+			domen.Test labDummy = (domen.Test) ucitajTestSO.getResult();
+			if (labDummy.getTestId().equals(test.getTestId())) {
 				System.out.println(labDummy);
 				condition = true;
 
@@ -92,5 +76,4 @@ class IzmeniLaborantaTest {
 		}
 
 	}
-
 }

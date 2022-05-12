@@ -1,10 +1,10 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.administrator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileOutputStream;
+import java.util.Properties;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,16 +12,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domen.Laborant;
+import domen.Administrator;
 import domen.OpstiDomenskiObjekat;
 import kontroler.Kontroler;
-import so.laborant.NadjiLaboranteSO;
-import so.laborant.UcitajLaborantaSO;
+import so.OpstaSistemskaOperacija;
+import so.administrator.UlogujAdministratoraSO;
 import util.SettingsLoader;
 
-class NadjiLaboranteTest {
-	private NadjiLaboranteSO nadjiLaboranteSO;
-	private static Laborant laborant;
+class UlogujAdministratoraTest {
+	private UlogujAdministratoraSO ulogujAdministratoraSo;
+	private static Administrator administrator;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -29,8 +29,7 @@ class NadjiLaboranteTest {
 		SettingsLoader.getInstance().setProperty("url", "jdbc:mysql://localhost:3306/lab-test");
 		SettingsLoader.getInstance().setProperty("username", "root");
 		SettingsLoader.getInstance().setProperty("password", "root");
-
-		laborant = new Laborant();
+		administrator = new Administrator();
 	}
 
 	@AfterAll
@@ -42,33 +41,38 @@ class NadjiLaboranteTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		nadjiLaboranteSO = new NadjiLaboranteSO();
+		ulogujAdministratoraSo = new UlogujAdministratoraSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		nadjiLaboranteSO = null;
+		ulogujAdministratoraSo = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> nadjiLaboranteSO.validate(new domen.Pacijent()));
+		assertThrows(java.lang.Exception.class, () -> ulogujAdministratoraSo.validate(new domen.Pacijent()));
 	}
 	@Test
-	void testExecute() {
+	void testGetResult() {
+		OpstiDomenskiObjekat generalEntity = null;
+		assertEquals(generalEntity, ulogujAdministratoraSo.getResult());
+	}
+	@Test
+	void testGetResultFromController() {
+		administrator.setIme("test");
+		administrator.setPrezime("test");
+		administrator.setKorisnickoIme("admin");
+		administrator.setLozinka("admin");
+//		ulogujAdministratoraSo.execute(administrator);
+		
 		try {
-			List<OpstiDomenskiObjekat> filterResult = Kontroler.getInstance().filtrirajLaborante("Ljubicic");
-			ArrayList<Laborant> filterResultCasted = new ArrayList<>();
-			assertEquals(1,filterResult.size());
-			for (OpstiDomenskiObjekat opstiDomenskiObjekat : filterResult) {
-				Laborant l = (Laborant) opstiDomenskiObjekat;
-				filterResultCasted.add(l);
-			}
-			assertEquals("Ljubicic",filterResultCasted.get(0).getPrezime());
+			assertEquals(administrator, Kontroler.getInstance().ulogujAdministratora(administrator.getKorisnickoIme(), administrator.getLozinka()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 
 }

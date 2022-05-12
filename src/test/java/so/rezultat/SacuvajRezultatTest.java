@@ -1,4 +1,4 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.rezultat;
 
 import static org.junit.jupiter.api.Assertions.*;
 

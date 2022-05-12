@@ -1,8 +1,9 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.laborant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -11,15 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import domen.Laborant;
+import domen.OpstiDomenskiObjekat;
 import so.laborant.NadjiLaboranteSO;
-import so.laborant.ObrisiLaborantaSO;
-import so.laborant.SacuvajLaborantaSO;
-import so.laborant.UcitajLaborantaSO;
+import so.laborant.VratiSveLaboranteSO;
 import util.SettingsLoader;
 
-class ObrisiLaborantaTest {
+class VratiSveLaboranteTest {
 
-	private ObrisiLaborantaSO obrisiLaborantaSO;
+	private VratiSveLaboranteSO vratiSveLaboranteSO;
 	private static Laborant laborant;
 
 	@BeforeAll
@@ -41,34 +41,26 @@ class ObrisiLaborantaTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		obrisiLaborantaSO = new ObrisiLaborantaSO();
+		vratiSveLaboranteSO = new VratiSveLaboranteSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		obrisiLaborantaSO = null;
+		vratiSveLaboranteSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> obrisiLaborantaSO.validate(new domen.Pacijent()));
+		assertThrows(java.lang.Exception.class, () -> vratiSveLaboranteSO.validate(new domen.Pacijent()));
 	}
 
 	@Test
 	void testExecute() {
-		laborant.setIme("Zdravko");
-		laborant.setPrezime("Colic");
-		laborant.setBrojOrdinacije(13);
-		SacuvajLaborantaSO sacuvajLaborantaSO = new SacuvajLaborantaSO();
-
 		try {
-			sacuvajLaborantaSO.execute(laborant);
-			laborant.setLaborantId(sacuvajLaborantaSO.getId());
-
-			obrisiLaborantaSO.execute(laborant);
-			UcitajLaborantaSO ucitajLaborantaSO = new UcitajLaborantaSO();
-			ucitajLaborantaSO.execute(laborant);
-			assertNull(ucitajLaborantaSO.getResult());
+			vratiSveLaboranteSO.execute(laborant);
+			List<OpstiDomenskiObjekat> filterResult = vratiSveLaboranteSO.getList();
+			assertNotNull(filterResult);
+			assertTrue(filterResult.size() >= 1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

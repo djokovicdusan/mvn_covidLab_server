@@ -1,9 +1,11 @@
-package rs.ac.fon.nprog.mvn_covidLab_server;
+package so.laborant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.util.Date;
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Properties;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -11,16 +13,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import domen.Administrator;
 import domen.Laborant;
-import domen.Pacijent;
+import domen.OpstiDomenskiObjekat;
+import kontroler.Kontroler;
+import so.OpstaSistemskaOperacija;
 import so.laborant.SacuvajLaborantaSO;
-import so.pacijent.SacuvajPacijentaSO;
-import so.pacijent.UcitajPacijentaSO;
+import so.laborant.UcitajLaborantaSO;
+import so.laborant.VratiSveLaboranteSO;
 import util.SettingsLoader;
 
-class UcitajPacijentaTest {
-	private UcitajPacijentaSO ucitajPacijentaSO;
-	private static Pacijent pacijent;
+class SacuvajLaborantaTest {
+	private SacuvajLaborantaSO sacuvajLaborantaSO;
+	private static Laborant laborant;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -29,7 +34,7 @@ class UcitajPacijentaTest {
 		SettingsLoader.getInstance().setProperty("username", "root");
 		SettingsLoader.getInstance().setProperty("password", "root");
 
-		pacijent = new Pacijent();
+		laborant = new Laborant();
 	}
 
 	@AfterAll
@@ -45,49 +50,38 @@ class UcitajPacijentaTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		ucitajPacijentaSO = new UcitajPacijentaSO();
+		sacuvajLaborantaSO = new SacuvajLaborantaSO();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		ucitajPacijentaSO = null;
+		sacuvajLaborantaSO = null;
 	}
 
 	@Test
 	void testValidate() {
-		assertThrows(java.lang.Exception.class, () -> ucitajPacijentaSO.validate(new domen.Test()));
+		assertThrows(java.lang.Exception.class, () -> sacuvajLaborantaSO.validate(new domen.Pacijent()));
 	}
+
 	@Test
 	void testExecute() {
-		pacijent.setIme("Stevan");
-//		pacijent.setPrezime("Colic");
-//		pacijent.setDatumRodjenja(new Date(2000, 10, 10));
-//		pacijent.setEmail("test");
-		pacijent.setPacijentId((long)1);
-//		Laborant lale = new Laborant();
-//		lale.setLaborantId((long)1);
-//		pacijent.setLaborant(lale);
-//		pacijent.setTelefon("123");
+		laborant.setIme("Zdravko");
+		laborant.setPrezime("Colic");
+		laborant.setBrojOrdinacije(13);
 
 		try {
-//			SacuvajPacijentaSO sacuvajPacijentaSO = new SacuvajPacijentaSO();
-//			sacuvajPacijentaSO.execute(pacijent);
-			ucitajPacijentaSO.execute(pacijent);
+			sacuvajLaborantaSO.execute(laborant);
+			laborant.setLaborantId(sacuvajLaborantaSO.getId());
 
-			boolean condition = false;
+			UcitajLaborantaSO ucitajLaborantaSO = new UcitajLaborantaSO();
+			ucitajLaborantaSO.execute(laborant);
+			assertEquals(laborant, ucitajLaborantaSO.getResult());
 
-			Pacijent labDummy = (Pacijent) ucitajPacijentaSO.getResult();
-			if (labDummy.getIme().equals(pacijent.getIme())) {
-				System.out.println(labDummy);
-				condition = true;
-
-			}
-			assertTrue(condition);
-//			assertEquals(laborant.getIme(),((Laborant)ucitajLaborantaSO.getResult()).getIme());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
+
 }
